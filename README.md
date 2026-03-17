@@ -6,9 +6,9 @@ I created c++ classes for character and game base mode. This created a header fi
 I added UProject functions for player movements. Inputs were also added in project settings.
 Definitions for the functions were added in character cpp file. After creating a blueprint
 for the character, I added a mesh and animation to it. I then moved the camera to a better position
-at the mesh's head. After player character was compiled, I statred the game, but the player did 
-not spawn. The game mode was not set up correctly as it was not set to the bluprint of the 
+at the mesh's head. After player character was compiled, I started the game, but the player did 
+not spawn. The game mode was not set up correctly as it was not set to the blueprint of the 
 game mode base I created. After that fix, the game played as expected. 
 One of the issues I had during this process had to do with live compiling, which I disabled after
 reading the announcement. Following the videos were pretty straightforward. 
-The next step would be adding in the comments and voice over. 
+After adding in comments, stepping stone 1 assignment is complete.
