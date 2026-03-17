@@ -15,7 +15,7 @@ APlayerChar::APlayerChar()
 	// Attaching camera to the character mesh and head bone
 	PlayerCamComp->SetupAttachment(GetMesh(), "head");
 
-	// Share rotation with controller. ex. Being able to look down and see player's body
+	// Pawn shares rotation with controller. ex. Being able to look down and see player's body
 	PlayerCamComp->bUsePawnControlRotation = true;
 
 }
@@ -42,38 +42,44 @@ void APlayerChar::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 	PlayerInputComponent->BindAxis("MoveRight", this, &APlayerChar::MoveRight);
 	PlayerInputComponent->BindAxis("LookUp", this, &APlayerChar::AddControllerPitchInput);
 	PlayerInputComponent->BindAxis("Turn", this, &APlayerChar::AddControllerYawInput);
-	PlayerInputComponent->BindAction("JumpEvent", IE_Pressed, this, &APlayerChar::StartJump);		//Action event bind action not axis
+	// Action event bind action not axis
+	PlayerInputComponent->BindAction("JumpEvent", IE_Pressed, this, &APlayerChar::StartJump);		
 	PlayerInputComponent->BindAction("JumpEvent", IE_Released, this, &APlayerChar::StopJump);
-
 	PlayerInputComponent->BindAction("Interact", IE_Pressed, this, &APlayerChar::FindObject);
 
 
 
 }
 
+// Called to establish axis 
+// Input tells us if value is positive or negative, which would make player move forward or backwards
 void APlayerChar::MoveForward(float axisValue)
 {
 	//Set up variables
-	FVector Direction = FRotationMatrix(Controller->GetControlRotation()).GetScaledAxis(EAxis::X);	//Local variable called direction and establish axis
-	AddMovementInput(Direction, axisValue);															// Move input will pass this input to tell us if its positive or negative 1 which would make us move forward or back
+	FVector Direction = FRotationMatrix(Controller->GetControlRotation()).GetScaledAxis(EAxis::X);	
+	AddMovementInput(Direction, axisValue);															
 }
 
+// Similar to MoveForward but with different axis to move right or left
 void APlayerChar::MoveRight(float axisValue)
 {
-	FVector Direction = FRotationMatrix(Controller->GetControlRotation()).GetScaledAxis(EAxis::Y);	// Similar to moveforward but with different axis
+	FVector Direction = FRotationMatrix(Controller->GetControlRotation()).GetScaledAxis(EAxis::Y);	
 	AddMovementInput(Direction, axisValue);
 }
 
+// Allows player to jump based on if spacebar is pressed
 void APlayerChar::StartJump()
 {
-	bPressedJump = true;		// Are we pressing spacebar or not
+	bPressedJump = true;
 }
 
+// Stops jump once spacebar is not pressed 
 void APlayerChar::StopJump()
 {
 	bPressedJump = false;
 }
 
+// ** Interact with environment, will set up later
 void APlayerChar::FindObject()
 {
 
