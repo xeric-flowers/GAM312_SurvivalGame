@@ -48,6 +48,31 @@ public:
 	UPROPERTY(VisibleAnywhere)
 		UCameraComponent* PlayerCamComp;
 
+	// Creating Player Stats variables, establishing health, hunger, and stamina, all set at 100
+	// "UPROPERTY" establishes the variable, 
+	// "EditAnywhere" give visibility and ability to change within class
+	// "BlueprintReadWrite" allows changes within blueprints, making it more accessible to adjust and test
+	// "Player Stats" Category will show up as a section on the blueprint's class defaults 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Stats")
+		float Health = 100.0f;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Stats")
+		float Hunger = 100.0f;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Stats")
+		float Stamina = 100.0f;
+
+	// Blueprint callable functions that sets Health, Hunger, and Stamina. 
+	// A timer is added for decreasing the stats
+	UFUNCTION(BlueprintCallable)
+		void SetHealth(float amount);
+
+	UFUNCTION(BlueprintCallable)
+		void SetHunger(float amount);
+
+	UFUNCTION(BlueprintCallable)
+		void SetStamina(float amount);
+
+	UFUNCTION(BlueprintCallable)
+		void DecreaseStats();
 };

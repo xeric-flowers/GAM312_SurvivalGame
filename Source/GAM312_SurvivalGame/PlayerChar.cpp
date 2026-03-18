@@ -24,6 +24,11 @@ APlayerChar::APlayerChar()
 void APlayerChar::BeginPlay()
 {
 	Super::BeginPlay();
+
+	// Set timer in BeginPlay so it starts ticking when game starts
+	FTimerHandle StatsTimerHandle;
+	// Call DecreaseStats Function every 2 seconds
+	GetWorld()->GetTimerManager().SetTimer(StatsTimerHandle, this, &APlayerChar::DecreaseStats, 2.0f, true);
 	
 }
 
@@ -82,6 +87,51 @@ void APlayerChar::StopJump()
 // ** Interact with environment, will set up later
 void APlayerChar::FindObject()
 {
+
+}
+
+// Call functions to adjust Stats in either direction, if negative value then stat subtracts, if positive value then stat adds
+// Stop stats from exceeding 100 by adding if statements to the three stat functions
+void APlayerChar::SetHealth(float amount)
+{
+	if (Health + amount < 100)
+	{
+		Health = Health + amount;
+	}
+}
+
+void APlayerChar::SetHunger(float amount)
+{
+	if (Hunger + amount < 100)
+	{
+		Hunger = Hunger + amount;
+	}
+}
+
+void APlayerChar::SetStamina(float amount)
+{
+	if (Stamina + amount < 100)
+	{
+		Stamina = Stamina + amount;
+	}
+}
+
+// 
+void APlayerChar::DecreaseStats()
+{
+	// Subtract 1 Hunger Stat every interval, when Hunger is greater than 0
+	if (Hunger > 0)
+	{
+		SetHunger(-1.0f);
+	}
+	// Regeneration of Stamina
+	SetStamina(10.0f);
+
+	// Once Hunger Stat is 0, Health Stat will decrease by 3
+	if (Hunger <= 0)
+	{
+		SetHealth(-3.0f);
+	}
 
 }
 
