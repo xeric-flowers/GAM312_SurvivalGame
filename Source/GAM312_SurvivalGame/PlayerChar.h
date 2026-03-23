@@ -9,6 +9,8 @@
 #include "Camera/CameraComponent.h"
 // Add access to our resources
 #include "Resource_M.h"
+// Add gameplay statics library
+#include "Kismet/GameplayStatics.h"
 #include "PlayerChar.generated.h"
 
 UCLASS()
@@ -83,7 +85,9 @@ public:
 	UPROPERTY(EditAnywhere, Category = "Resources")
 	TArray<FString> ResourcesNameArray;
 
-
+	// Add new property and call it hitDecal
+	UPROPERTY(EditAnywhere, Category = "HitMarker")
+		UMaterialInterface* hitDecal;
 
 	// Blueprint callable functions that sets Health, Hunger, and Stamina. 
 	// A timer is added for decreasing the stats

@@ -59,8 +59,6 @@ void APlayerChar::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 	PlayerInputComponent->BindAction("JumpEvent", IE_Released, this, &APlayerChar::StopJump);
 	PlayerInputComponent->BindAction("Interact", IE_Pressed, this, &APlayerChar::FindObject);
 
-
-
 }
 
 // Called to establish axis 
@@ -115,38 +113,49 @@ void APlayerChar::FindObject()
 		// If HitResult.GetActor is equal to AResource_M, then it sets the "HitResource" variable
 		AResource_M* HitResource = Cast<AResource_M>(HitResult.GetActor());
 
-		// Check if resource is valid, otherwise if hit something other than resource, it might crash editor
-		if (HitResource)
+		// Add if statement for stamina, if player has 5 value, then it will subtract 5 stamina from it
+		if (Stamina > 5.0f)
 		{
-			// Get the "hitName" from the resource that player just collected
-			FString hitName = HitResource->resourceName;
-			// Get the "resourceValue" by checking the resource amount from the resource player just collected
-			int resourceValue = HitResource->resourceAmount;
-
-			//  From the "HitResource" we are setting its "totalResource" by subtracting its original "totalResource" with the "resourceValue"
-			HitResource->totalResource = HitResource->totalResource - resourceValue;
-
-			// If total value is greater than resource value, then give resource info (value and name)
-			if (HitResource->totalResource > resourceValue)
+			// Check if resource is valid, otherwise if hit something other than resource, it might crash editor
+			if (HitResource)
 			{
-				GiveResource(resourceValue, hitName);
+				// Get the "hitName" from the resource that player just collected
+				FString hitName = HitResource->resourceName;
+				// Get the "resourceValue" by checking the resource amount from the resource player just collected
+				int resourceValue = HitResource->resourceAmount;
 
-				// Check if player hit a resource
-				check(GEngine != nullptr);
-				GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("Resource Collected"));
-			}
-			// Once there is no resource value left, the resource is destroyed
-			else
-			{
-				HitResource->Destroy();
-				check(GEngine != nullptr);
-				GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("Resource Depleted"));
-			}
+				//  From the "HitResource" we are setting its "totalResource" by subtracting its original "totalResource" with the "resourceValue"
+				HitResource->totalResource = HitResource->totalResource - resourceValue;
 
+				// If total value is greater than resource value, then give resource info (value and name)
+				if (HitResource->totalResource > resourceValue)
+				{
+					GiveResource(resourceValue, hitName);
+
+					// Check if player hit a resource
+					check(GEngine != nullptr);
+					GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("Resource Collected"));
+					
+					// Spawns in the decal every time hitdecal is called
+					// Using GameplayStatics library, set size decal, grab location of hit result, rotation of decal, its lifespan
+					UGameplayStatics::SpawnDecalAtLocation(GetWorld(), hitDecal, FVector(10.0f, 10.0f, 10.0f), HitResult.Location, FRotator(-90, 0, 0), 2.0f);
+
+					SetStamina(-5.0f);
+				
+				
+				}
+				// Once there is no resource value left, the resource is destroyed
+				else
+				{
+					HitResource->Destroy();
+					check(GEngine != nullptr);
+					GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("Resource Depleted"));
+				}
+
+
+			}
 
 		}
-
-
 
 	}
 }
