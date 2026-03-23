@@ -4,9 +4,9 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-// Text render added for testing
+// M2: Text render added for testing
 #include "Components/TextRenderComponent.h" 
-// Implements static mesh
+// M2: Implements static mesh
 #include "Components/StaticMeshComponent.h"
 #include "Resource_M.generated.h"
 
@@ -16,30 +16,30 @@ class GAM312_SURVIVALGAME_API AResource_M : public AActor
 	GENERATED_BODY()
 	
 public:	
-	// Sets default values for this actor's properties
+	// M2: Sets default values for this actor's properties
 	AResource_M();
 
 protected:
-	// Called when the game starts or when spawned
+	// M2: Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
 public:	
-	// Called every frame
+	// M2: Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	// F string "resourceName" is defaulted to Wood. "EditAnywhere" is added to access through the details panel
+	// M2: F string "resourceName" is defaulted to Wood. "EditAnywhere" is added to access through the details panel
 	UPROPERTY(EditAnywhere)
 		FString resourceName = "Wood";
 
-	// "resourceAmount" is going to give us this amount every time player hits this resource
+	// M2: "resourceAmount" is going to give us this amount every time player hits this resource
 	UPROPERTY(EditAnywhere)
 		int resourceAmount = 5;
 
-	// "totalResource" is the total amount that the resource has before it gets depleted
+	// M2: "totalResource" is the total amount that the resource has before it gets depleted
 	UPROPERTY(EditAnywhere)
 		int totalResource = 100;
 
-	// temp text sets text render to the text itself
+	// M2: temp text sets text render to the text itself
 	UPROPERTY()
 		FText tempText;
 

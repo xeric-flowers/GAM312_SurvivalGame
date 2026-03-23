@@ -3,36 +3,36 @@
 
 #include "Resource_M.h"
 
-// Sets default values
+// M2: Sets default values
 AResource_M::AResource_M()
 {
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+ 	// M2: Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	// Set default subobjects for the newly added UProperties in header file.
+	// M2: Set default subobjects for the newly added UProperties in header file.
 	ResourceNameTxt = CreateDefaultSubobject<UTextRenderComponent>(TEXT("Text Render"));
 	Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
 
 	RootComponent = Mesh;
 
-	// Attach text render component to the mesh
+	// M2: Attach text render component to the mesh
 	ResourceNameTxt->SetupAttachment(Mesh);
 }
 
-// Called when the game starts or when spawned
+// M2: Called when the game starts or when spawned
 void AResource_M::BeginPlay()
 {
 	Super::BeginPlay();
 
-	// Grabs the text from the string of the resource that is set from details panel 
+	// M2: Grabs the text from the string of the resource that is set from details panel 
 	tempText = tempText.FromString(resourceName);
 
-	// Then sets text render to the new text
+	// M2: Then sets text render to the new text
 	ResourceNameTxt->SetText(tempText);
 	
 }
 
-// Called every frame
+// M2: Called every frame
 void AResource_M::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
