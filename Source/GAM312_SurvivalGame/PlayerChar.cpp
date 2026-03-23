@@ -6,7 +6,7 @@
 // Sets default values
 APlayerChar::APlayerChar()
 {
- 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
 	// Initial setup of camera component.
@@ -17,6 +17,13 @@ APlayerChar::APlayerChar()
 
 	// Pawn shares rotation with controller. ex. Being able to look down and see player's body
 	PlayerCamComp->bUsePawnControlRotation = true;
+
+	// Setting number of elements to 3
+	ResourcesArray.SetNum(3);
+	// Setting element to name of the appropriate resource
+	ResourcesNameArray.Add(TEXT("Wood"));
+	ResourcesNameArray.Add(TEXT("Stone"));
+	ResourcesNameArray.Add(TEXT("Berry"));
 
 }
 
@@ -29,7 +36,7 @@ void APlayerChar::BeginPlay()
 	FTimerHandle StatsTimerHandle;
 	// Call DecreaseStats Function every 2 seconds
 	GetWorld()->GetTimerManager().SetTimer(StatsTimerHandle, this, &APlayerChar::DecreaseStats, 2.0f, true);
-	
+
 }
 
 // Called every frame
@@ -43,12 +50,12 @@ void APlayerChar::Tick(float DeltaTime)
 void APlayerChar::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
-	PlayerInputComponent->BindAxis("MoveForward", this, &APlayerChar::MoveForward);	
+	PlayerInputComponent->BindAxis("MoveForward", this, &APlayerChar::MoveForward);
 	PlayerInputComponent->BindAxis("MoveRight", this, &APlayerChar::MoveRight);
 	PlayerInputComponent->BindAxis("LookUp", this, &APlayerChar::AddControllerPitchInput);
 	PlayerInputComponent->BindAxis("Turn", this, &APlayerChar::AddControllerYawInput);
 	// Action event bind action not axis
-	PlayerInputComponent->BindAction("JumpEvent", IE_Pressed, this, &APlayerChar::StartJump);		
+	PlayerInputComponent->BindAction("JumpEvent", IE_Pressed, this, &APlayerChar::StartJump);
 	PlayerInputComponent->BindAction("JumpEvent", IE_Released, this, &APlayerChar::StopJump);
 	PlayerInputComponent->BindAction("Interact", IE_Pressed, this, &APlayerChar::FindObject);
 
@@ -61,14 +68,14 @@ void APlayerChar::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 void APlayerChar::MoveForward(float axisValue)
 {
 	//Set up variables
-	FVector Direction = FRotationMatrix(Controller->GetControlRotation()).GetScaledAxis(EAxis::X);	
-	AddMovementInput(Direction, axisValue);															
+	FVector Direction = FRotationMatrix(Controller->GetControlRotation()).GetScaledAxis(EAxis::X);
+	AddMovementInput(Direction, axisValue);
 }
 
 // Similar to MoveForward but with different axis to move right or left
 void APlayerChar::MoveRight(float axisValue)
 {
-	FVector Direction = FRotationMatrix(Controller->GetControlRotation()).GetScaledAxis(EAxis::Y);	
+	FVector Direction = FRotationMatrix(Controller->GetControlRotation()).GetScaledAxis(EAxis::Y);
 	AddMovementInput(Direction, axisValue);
 }
 
@@ -84,10 +91,64 @@ void APlayerChar::StopJump()
 	bPressedJump = false;
 }
 
-// ** Interact with environment, will set up later
+// Set up line trace
 void APlayerChar::FindObject()
 {
+	// Establish HitResult Variable
+	FHitResult HitResult;
+	// Grab start location which is the same as the camera location
+	FVector StartLocation = PlayerCamComp->GetComponentLocation();
+	// Direction is 800 units ahead of the camera's current location
+	FVector Direction = PlayerCamComp->GetForwardVector() * 800.0f;
+	FVector EndLocation = StartLocation + Direction;
 
+	// Line trace will ignore player character
+	FCollisionQueryParams QueryParams;
+	QueryParams.AddIgnoredActor(this);
+	// Allows us to see complex collisions
+	QueryParams.bTraceComplex = true;
+	QueryParams.bReturnFaceIndex = true;
+
+	// if statement when get world passes these 
+	if (GetWorld()->LineTraceSingleByChannel(HitResult, StartLocation, EndLocation, ECC_Visibility, QueryParams))
+	{
+		// If HitResult.GetActor is equal to AResource_M, then it sets the "HitResource" variable
+		AResource_M* HitResource = Cast<AResource_M>(HitResult.GetActor());
+
+		// Check if resource is valid, otherwise if hit something other than resource, it might crash editor
+		if (HitResource)
+		{
+			// Get the "hitName" from the resource that player just collected
+			FString hitName = HitResource->resourceName;
+			// Get the "resourceValue" by checking the resource amount from the resource player just collected
+			int resourceValue = HitResource->resourceAmount;
+
+			//  From the "HitResource" we are setting its "totalResource" by subtracting its original "totalResource" with the "resourceValue"
+			HitResource->totalResource = HitResource->totalResource - resourceValue;
+
+			// If total value is greater than resource value, then give resource info (value and name)
+			if (HitResource->totalResource > resourceValue)
+			{
+				GiveResource(resourceValue, hitName);
+
+				// Check if player hit a resource
+				check(GEngine != nullptr);
+				GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("Resource Collected"));
+			}
+			// Once there is no resource value left, the resource is destroyed
+			else
+			{
+				HitResource->Destroy();
+				check(GEngine != nullptr);
+				GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("Resource Depleted"));
+			}
+
+
+		}
+
+
+
+	}
 }
 
 // Call functions to adjust Stats in either direction, if negative value then stat subtracts, if positive value then stat adds
@@ -133,5 +194,26 @@ void APlayerChar::DecreaseStats()
 		SetHealth(-3.0f);
 	}
 
+}
+
+// Determines which resource player is hitting and add info from that
+void APlayerChar::GiveResource(float amount, FString resourceType)
+{
+	// if resourceType (name) is equal to a resource name,
+	// then we are adding the value from that resource and passing it
+	if (resourceType == "Wood")
+	{
+		ResourcesArray[0] = ResourcesArray[0] + amount;
+	}
+
+	if (resourceType == "Stone")
+	{
+		ResourcesArray[1] = ResourcesArray[1] + amount;
+	}
+
+	if (resourceType == "Berry")
+	{
+		ResourcesArray[2] = ResourcesArray[2] + amount;
+	}
 }
 

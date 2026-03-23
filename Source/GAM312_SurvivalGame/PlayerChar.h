@@ -7,6 +7,8 @@
 #include "GameFramework/Character.h"
 // Includes the library of camera component to reference elements like adding multiple cameras 
 #include "Camera/CameraComponent.h"
+// Add access to our resources
+#include "Resource_M.h"
 #include "PlayerChar.generated.h"
 
 UCLASS()
@@ -22,7 +24,7 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-public:	
+public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
@@ -30,23 +32,23 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 	UFUNCTION()
-		void MoveForward(float axisValue);
+	void MoveForward(float axisValue);
 
 	UFUNCTION()
-		void MoveRight(float axisValue);
+	void MoveRight(float axisValue);
 
 	UFUNCTION()
-		void StartJump();
+	void StartJump();
 
 	UFUNCTION()
-		void StopJump();
+	void StopJump();
 
 	UFUNCTION()
-		void FindObject();
+	void FindObject();
 
 	// Setting to VisibleAnywhere will make camera component visible in Blueprint but not modify it
 	UPROPERTY(VisibleAnywhere)
-		UCameraComponent* PlayerCamComp;
+	UCameraComponent* PlayerCamComp;
 
 	// Creating Player Stats variables, establishing health, hunger, and stamina, all set at 100
 	// "UPROPERTY" establishes the variable, 
@@ -54,13 +56,34 @@ public:
 	// "BlueprintReadWrite" allows changes within blueprints, making it more accessible to adjust and test
 	// "Player Stats" Category will show up as a section on the blueprint's class defaults 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Stats")
-		float Health = 100.0f;
+	float Health = 100.0f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Stats")
-		float Hunger = 100.0f;
+	float Hunger = 100.0f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Stats")
-		float Stamina = 100.0f;
+	float Stamina = 100.0f;
+
+	// Set up integers for resources (Wood, Stone, and Berries)
+	UPROPERTY(EditAnywhere, Category = "Resources")
+	int Wood;
+
+	UPROPERTY(EditAnywhere, Category = "Resources")
+	int Stone;
+
+	UPROPERTY(EditAnywhere, Category = "Resources")
+	int Berry;
+
+	// Set up T Array for all resources corresponding to the string array for the names of the resources. 
+	// Ex. wood is 0, Stone is 1, and Berry is 2
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Resources")
+	TArray<int> ResourcesArray;
+
+	// Resource array needs to match the resource name array
+	UPROPERTY(EditAnywhere, Category = "Resources")
+	TArray<FString> ResourcesNameArray;
+
+
 
 	// Blueprint callable functions that sets Health, Hunger, and Stamina. 
 	// A timer is added for decreasing the stats
@@ -75,4 +98,16 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 		void DecreaseStats();
+
+	UFUNCTION()
+		void GiveResource(float amount, FString resourceType);
+
+
+
+
+
+
+
+
+
 };
