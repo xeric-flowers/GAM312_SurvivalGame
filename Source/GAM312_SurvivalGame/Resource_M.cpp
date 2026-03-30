@@ -9,7 +9,7 @@ AResource_M::AResource_M()
  	// M2: Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	// M2: Set default subobjects for the newly added UProperties in header file.
+	// M2: Set default subObjects for the newly added UProperties in header file.
 	ResourceNameTxt = CreateDefaultSubobject<UTextRenderComponent>(TEXT("Text Render"));
 	Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
 
