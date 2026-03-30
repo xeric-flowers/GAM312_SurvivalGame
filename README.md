@@ -49,3 +49,17 @@ I had some compilation errors from small typos like missing the plural "s" in re
 Since the error list can get long, I used the search feature to filter out my class files. I
 created a new branch for this module to keep progress seperate and safe before merging back 
 to master.
+
+Module 3
+
+This module I implemented a crafting and building system using both C++ and Blueprint. 
+I created a UI that allows the player to craft walls, floors, and ceilings using resources 
+like wood and stone, and also added a feature to eat berries to restore stats.
+
+One challenge I faced was understanding how the C++ code connected to the Blueprint widgets, 
+especially when updating resources and spawning building parts. 
+I also had some confusion managing arrays and making sure values updated correctly in the UI.
+
+I learned how to use arrays to track resources and buildings and spawn actors out in the world. 
+This assignment helped me understand how different parts of Unreal work together.
+
