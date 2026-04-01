@@ -11,6 +11,7 @@
 #include "Resource_M.h"
 // M2: Add gameplay statics library
 #include "Kismet/GameplayStatics.h"
+#include "BuildingPart.h"
 #include "PlayerChar.generated.h"
 
 UCLASS()
@@ -85,9 +86,27 @@ public:
 	UPROPERTY(EditAnywhere, Category = "Resources")
 	TArray<FString> ResourcesNameArray;
 
-	// Add new property and call it hitDecal
+	// M2: Add new property and call it hitDecal
 	UPROPERTY(EditAnywhere, Category = "HitMarker")
 		UMaterialInterface* hitDecal;
+
+	// M3: Variables for building mechanics
+	// M3: Set up array to store information of how many building part types we have
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "BuildingSupplies")
+		TArray<int> BuildingArray;
+
+	// M3: Boolean to determine if actively building or not
+	UPROPERTY()
+		bool isBuilding;
+
+	// M3: Select children when we are spawning objects
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+		TSubclassOf<ABuildingPart> BuildPartClass;
+
+	// M3: whichever object we spawn, we set it to spawned part blueprint
+	UPROPERTY()
+			ABuildingPart* spawnedPart;
+
 
 	// M2: Blueprint callable functions that sets Health, Hunger, and Stamina. 
 	// M2: A timer is added for decreasing the stats
@@ -105,5 +124,18 @@ public:
 
 	UFUNCTION()
 		void GiveResource(float amount, FString resourceType);
+
+
+	// M3: Set up functions for Building Mechanics
+	// M3: Pass through object amounts and names to determine what object is being built by comparing strings
+	UFUNCTION(BlueprintCallable)
+		void UpdateResources(float woodAmount, float stoneAmount, FString buildingObject);
+
+	UFUNCTION(BlueprintCallable)
+		void SpawnBuilding(int buildingID, bool& isSuccess);
+
+	UFUNCTION()
+		void RotateBuilding();
+
 
 };
