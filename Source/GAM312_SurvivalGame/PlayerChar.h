@@ -12,6 +12,7 @@
 // M2: Add gameplay statics library
 #include "Kismet/GameplayStatics.h"
 #include "BuildingPart.h"
+#include "PlayerWidget.h"
 #include "PlayerChar.generated.h"
 
 UCLASS()
@@ -107,6 +108,9 @@ public:
 	UPROPERTY()
 			ABuildingPart* spawnedPart;
 
+	// M4: UProperty for player widget
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		UPlayerWidget* playerUI;
 
 	// M2: Blueprint callable functions that sets Health, Hunger, and Stamina. 
 	// M2: A timer is added for decreasing the stats

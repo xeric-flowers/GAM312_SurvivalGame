@@ -45,11 +45,15 @@ void APlayerChar::BeginPlay()
 void APlayerChar::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	// M3: set up tick event for building mechanic
-	// M3: If we are actively building and if spawned objects are valid, 
-	//     then we set up a trace that is 400 units ahead from character to set the actors location to place the object.
-	//     While tick is active, object will follow camera movement 400 units ahead from player, 
-	//     until we click again, then object is placed wherever player is pointing. Then event tick will stop.
+
+	// M4: Update player widget health, hunger, and stamina bars every tick
+	playerUI->UpdateBars(Health, Hunger, Stamina);
+
+	/* M3: Set up tick event for building mechanic.
+	       If we are actively building and if spawned objects are valid, 
+	       then we set up a trace that is 400 units ahead from character to set the actors location to place the object.
+	       While tick is active, object will follow camera movement 400 units ahead from player, 
+	       until we click again, then object is placed wherever player is pointing. Then event tick will stop.*/
 	if (isBuilding)
 	{
 		if (spawnedPart)
