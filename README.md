@@ -63,3 +63,17 @@ I also had some confusion managing arrays and making sure values updated correct
 I learned how to use arrays to track resources and buildings and spawn actors out in the world. 
 This assignment helped me understand how different parts of Unreal work together.
 
+Module 4
+
+For this module, I worked on creating a player widget and adding a basic AI system. I started by
+making a C++ class for the player widget and added a function to update the health, hunger, and
+stamina bars. Then I created a widget blueprint and set up three progress bars and I connected the
+widget to my player character so the bars update every frame using the player’s current stats. 
+
+I created an AI character and controller and implemented basic random movement. 
+The AI moves to random locations within a set radius using AI Move To, and repeats this with
+a delay so it continuously moves.
+
+I did run into an issue where the AI wasn’t moving, but I figured out it was because I accidentally
+used a player controller instead of an AI controller. Once I fixed that, everything worked as expected.
+
