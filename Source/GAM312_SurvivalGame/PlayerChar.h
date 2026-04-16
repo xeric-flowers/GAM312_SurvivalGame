@@ -13,6 +13,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "BuildingPart.h"
 #include "PlayerWidget.h"
+#include "ObjectiveWidget.h"
 #include "PlayerChar.generated.h"
 
 UCLASS()
@@ -111,6 +112,16 @@ public:
 	// M4: UProperty for player widget
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		UPlayerWidget* playerUI;
+
+	// M5: Variables for objective widget
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		UObjectiveWidget* objWidget;
+
+	UPROPERTY()
+		float objectsBuilt;
+
+	UPROPERTY()
+		float matsCollected;
 
 	// M2: Blueprint callable functions that sets Health, Hunger, and Stamina. 
 	// M2: A timer is added for decreasing the stats
