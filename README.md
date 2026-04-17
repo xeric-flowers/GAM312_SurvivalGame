@@ -77,3 +77,11 @@ a delay so it continuously moves.
 I did run into an issue where the AI wasn’t moving, but I figured out it was because I accidentally
 used a player controller instead of an AI controller. Once I fixed that, everything worked as expected.
 
+Module 5
+
+In this module, I created an objective that tracks player progress and displays it using a widget.
+The player must collect 500 materials and build 5 parts to complete the game.
+I used C++ to track these values and update the UI through Blueprint functions. 
+One issue I encountered was that the material counter was not updating, which I fixed by correcting 
+the event connections in the widget graph.
+
