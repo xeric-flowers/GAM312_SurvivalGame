@@ -39,6 +39,13 @@ void APlayerChar::BeginPlay()
 	// M2: Call DecreaseStats Function every 2 seconds
 	GetWorld()->GetTimerManager().SetTimer(StatsTimerHandle, this, &APlayerChar::DecreaseStats, 2.0f, true);
 
+	// M5: Check if widget is valid, set values to zero at initial start
+	if (objWidget)
+	{
+		objWidget->UpdatebuildOBJ(0.0f);
+		objWidget->UpdatematOBJ(0.0f);
+	}
+
 }
 
 // M1: Called every frame
@@ -154,6 +161,11 @@ void APlayerChar::FindObject()
 					{
 						GiveResource(resourceValue, hitName);
 
+						// M5: Update the objective widget by adding the resource value to the mats collected variable
+						matsCollected = matsCollected + resourceValue;
+
+						objWidget->UpdatematOBJ(matsCollected);
+
 						check(GEngine != nullptr);
 						GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("Resource Collected"));
 
@@ -176,6 +188,10 @@ void APlayerChar::FindObject()
 	else
 	{
 		isBuilding = false;
+		// M5: Update the objective widget by adding 1 to the variable when object is placed
+		objectsBuilt = objectsBuilt + 1.0f;
+
+		objWidget->UpdatebuildOBJ(objectsBuilt);
 	}
 
 }
