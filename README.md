@@ -85,3 +85,10 @@ I used C++ to track these values and update the UI through Blueprint functions.
 One issue I encountered was that the material counter was not updating, which I fixed by correcting 
 the event connections in the widget graph.
 
+Module 6
+
+I worked on adding resource meshes and landscaping with the modeling tools. I added materials to these
+meshes and paint. I made the landscape with a lot of variation to the terrain and used grass and dirt 
+layers. Then I added a bunch of resources all around. For the win lose widget, I created a widget with
+a text if winner or loser and two buttons to retry or quit game. 
+
