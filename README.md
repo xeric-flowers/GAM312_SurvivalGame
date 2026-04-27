@@ -92,3 +92,11 @@ meshes and paint. I made the landscape with a lot of variation to the terrain an
 layers. Then I added a bunch of resources all around. For the win lose widget, I created a widget with
 a text if winner or loser and two buttons to retry or quit game. 
 
+Module 7 
+
+Adding some final elements before packaging game. The player was going through all the resources and
+AI characters so I added Collision boxes. I also added berry spheres to the bushes. The last thing I 
+added was damage when hitting the AI character, that also pushes player back a bit to avoid multiple
+touches that would then make the player lose very quickly. Finally I packaged the game to Windows 
+Platform. 
+
